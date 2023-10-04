@@ -14,7 +14,7 @@ module.exports = {
   // Get a user
   async getSingleUser(req, res) {
     try {
-      const user = await Course.findOne({ _id: req.params.userId })
+      const user = await User.findOne({ _id: req.params.userId })
         .select('-__v');
 
       if (!user) {
@@ -84,6 +84,7 @@ module.exports = {
 
       user.friends.push(req.params.friendId)
       await user.save();
+      res.json({ message: `${user} is now friends with ${friend}` })
 
     } catch (err) {
       res.status(500).json(err);
