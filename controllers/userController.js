@@ -1,3 +1,4 @@
+const { ObjectId } = require('mongoose').Types;
 const { Thought, User } = require('../models');
 
 module.exports = {
@@ -68,4 +69,47 @@ module.exports = {
       res.status(500).json(err);
     }
   },
+  // Add friend
+  async addFriend(req, res) {
+    try {
+      const user = await User.findById(req.params.userId)
+      const friend = await User.findById(req.params.friendId)
+
+      if (!user || !friend) {
+        return res.status(404).json({ message: 'User or friend not found' });
+      }
+      if (user.friends.includes(req.params.friendId)) {
+        return res.status(400).json({ message: 'Friend already added' });
+      }
+
+      user.friends.push(req.params.friendId)
+      await user.save();
+
+    } catch (err) {
+      res.status(500).json(err);
+    }
+  },
+  // Delete friend
+  async deleteFriend(req, res) {
+    try {
+      const user = await User.findById(req.params.userId)
+      
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+      if (!user.friends.includes(req.params.friendId)) {
+        return res.status(400).json({ message: 'Friend not found in user\'s friends list' });
+      }
+
+      user.friends = user.friends.filter(friend => friend.toString() !== req.params.friendId)
+      await user.save();
+
+      res.json({ message: 'Friend deleted successfully' });
+
+    } catch (err) {
+      res.status(500).json(err);
+    }
+  }
 };
+
+

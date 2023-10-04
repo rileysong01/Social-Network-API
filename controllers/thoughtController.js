@@ -1,69 +1,38 @@
 const { ObjectId } = require('mongoose').Types;
-const { Student, Course } = require('../models');
+const { Thought, User } = require('../models');
 
-// Aggregate function to get the number of students overall
-const headCount = async () => {
-  const numberOfStudents = await Student.aggregate()
-    .count('studentCount');
-  return numberOfStudents;
-}
-
-// Aggregate function for getting the overall grade using $avg
-const grade = async (studentId) =>
-  Student.aggregate([
-    // only include the given student by using $match
-    { $match: { _id: new ObjectId(studentId) } },
-    {
-      $unwind: '$assignments',
-    },
-    {
-      $group: {
-        _id: new ObjectId(studentId),
-        overallGrade: { $avg: '$assignments.score' },
-      },
-    },
-  ]);
 
 module.exports = {
-  // Get all students
-  async getStudents(req, res) {
+  // Get all thoughts
+  async getThought(req, res) {
     try {
-      const students = await Student.find();
-
-      const studentObj = {
-        students,
-        headCount: await headCount(),
-      };
-
-      res.json(studentObj);
+      const thoughts = await Thought.find();
+      res.json(thoughts);
     } catch (err) {
       console.log(err);
       return res.status(500).json(err);
     }
   },
-  // Get a single student
-  async getSingleStudent(req, res) {
+  // Get a single thought
+  async getSingleThought(req, res) {
     try {
-      const student = await Student.findOne({ _id: req.params.studentId })
+      const thought = await Thought.findOne({ _id: req.params.thoughtId })
         .select('-__v');
 
-      if (!student) {
-        return res.status(404).json({ message: 'No student with that ID' })
+      if (!thought) {
+        return res.status(404).json({ message: 'No thought with that ID' })
       }
 
-      res.json({
-        student,
-        grade: await grade(req.params.studentId),
-      });
+      res.json(thought)
     } catch (err) {
       console.log(err);
       return res.status(500).json(err);
     }
   },
   // create a new student
-  async createStudent(req, res) {
+  async createThought(req, res) {
     try {
-      const student = await Student.create(req.body);
+      const thought = await Thought.create(req.body);
       res.json(student);
     } catch (err) {
       res.status(500).json(err);
