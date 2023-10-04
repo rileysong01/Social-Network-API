@@ -8,7 +8,7 @@ const thoughtSchema = new Schema(
             type: String,
             required: true,
             validate: {
-                validator: function(value) {
+                validator: function (value) {
                     return value.length >= 1 && value.length <= 280;
                 },
                 message: 'Thought text must be between 1 and 280 characters'
@@ -17,7 +17,7 @@ const thoughtSchema = new Schema(
         createdAt: {
             type: Date,
             default: Date.now,
-            get: function(timestamp) {
+            get: function (timestamp) {
                 return moment(timestamp).format('YYYY-MM-DD HH:mm:ss');
             }
         },
@@ -26,6 +26,11 @@ const thoughtSchema = new Schema(
             required: true,
         },
         reactions: [reactionSchema]
+    },
+    {
+        toJSON: {
+            getters: true,
+        },
     }
 )
 

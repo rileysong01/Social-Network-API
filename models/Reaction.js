@@ -19,9 +19,14 @@ const reactionSchema = new Schema(
         createdAt: {
             type: Date,
             default: Date.now,
-            get: function(timestamp) {
+            get: function (timestamp) {
                 return moment(timestamp).format('YYYY-MM-DD HH:mm:ss');
             }
+        },
+    },
+    {
+        toJSON: {
+            getters: true,
         },
     }
 )
