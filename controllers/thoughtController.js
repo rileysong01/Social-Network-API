@@ -44,10 +44,10 @@ module.exports = {
       res.status(500).json(err);
     }
   },
-  // Delete a student and remove them from the course
-  async deleteStudent(req, res) {
+  // Delete a thought and remove it from the user
+  async deleteThought(req, res) {
     try {
-      const student = await Student.findOneAndRemove({ _id: req.params.studentId });
+      const thought = await Thought.findOneAndRemove({ _id: req.params.studentId });
 
       if (!student) {
         return res.status(404).json({ message: 'No such student exists' });
@@ -72,47 +72,24 @@ module.exports = {
     }
   },
 
-  // Add an assignment to a student
-  async addAssignment(req, res) {
-    console.log('You are adding an assignment');
-    console.log(req.body);
-
+  // Update a thought
+  async updateThought(req, res) {
     try {
-      const student = await Student.findOneAndUpdate(
-        { _id: req.params.studentId },
-        { $addToSet: { assignments: req.body } },
+      const thought = await Thought.findOneAndUpdate(
+        { _id: req.params.userId },
+        { $set: req.body },
         { runValidators: true, new: true }
       );
 
-      if (!student) {
-        return res
-          .status(404)
-          .json({ message: 'No student found with that ID :(' });
+      if (!thought) {
+        res.status(404).json({ message: 'No thought with this id!' });
       }
 
-      res.json(student);
+      res.json(thought);
     } catch (err) {
       res.status(500).json(err);
     }
   },
-  // Remove assignment from a student
-  async removeAssignment(req, res) {
-    try {
-      const student = await Student.findOneAndUpdate(
-        { _id: req.params.studentId },
-        { $pull: { assignment: { assignmentId: req.params.assignmentId } } },
-        { runValidators: true, new: true }
-      );
-
-      if (!student) {
-        return res
-          .status(404)
-          .json({ message: 'No student found with that ID :(' });
-      }
-
-      res.json(student);
-    } catch (err) {
-      res.status(500).json(err);
-    }
-  },
+  // POST reaction 
+  
 };
