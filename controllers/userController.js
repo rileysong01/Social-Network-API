@@ -84,7 +84,7 @@ module.exports = {
 
       user.friends.push(req.params.friendId)
       await user.save();
-      res.json({ message: `${user} is now friends with ${friend}` })
+      res.json({ message: `Friend added!` })
 
     } catch (err) {
       res.status(500).json(err);
