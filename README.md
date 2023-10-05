@@ -1,4 +1,4 @@
-# Employee-Tracker
+# Social-Network-API
 ![Static Badge](https://img.shields.io/badge/License-MIT-blue)
   ## Description
   This project was built to demonstrate my knowledge of manipulating NOSQL databases using Mongoose ODM in Node.js. This backend application has two collections in a social network database, where users can add and delete thoughts, reactions and friends.
