@@ -31,7 +31,8 @@
   To initialize the app:
   ![screenshot of user initiating app in terminal](assets/init.png)
 
-
+  For a full walkthrough demo, please refer to the following link:
+  https://drive.google.com/file/d/1Y5ubTufmrKDPdI_GKu8W05Dqlwa9ojFg/view
 
   ## Credits
   N/A 
